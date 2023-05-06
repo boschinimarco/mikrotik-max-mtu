@@ -1,0 +1,73 @@
+#-----------------------------------------------------------------------
+# NOME: test-mtu-routeros-v7
+# VERS: 1.0
+# DATA: 2023-05-05 (yyyy-mm-dd)
+# AUTH: Marco Boschini
+# MAIL: marco@corsimikrotik.it
+# WEB:  https://corsimikrotik.it
+#-----------------------------------------------------------------------
+# CorsiMikroTik è training center ufficiale MikroTik.
+#-----------------------------------------------------------------------
+# registrandoti sul sito https://corsimikrotik.it/registrazione
+# potrai accedere gratuitamente a:
+# - modulo 1 del corso ZeroMikroTik
+# - evento introduttivo a "TheDude"
+#-----------------------------------------------------------------------
+# i corsi disponibili sono:
+# - ZeroMikroTik: da Zero a MTCNA. 6 moduli online da 4 ore e poi MTCNA
+# - MTCNA: la prima certificazione MikroTik che ti permette di avere una panoramica
+#          completa sui prodotti MikroTik e sulle funzionalità di RouterOS
+# - MTCRE: il corso dedicato a Routing statico, dinamico OSPF, tunnel VPN e VLAN
+# - MTCINE: Inter-Networking dedicato a BGP-MPLS-VPLS
+# - MTCWE: il corso dedicato al wireless
+# - MTCSE: il corso dedicato alla security. Metodi di attacco e protezione/mitigazione.
+# - MTCTCE: Traffic Control è dedicato a DHCP, Firewall e QoS (Quality of Service)
+# - MTCSWE: switching, viaggio profondo nel layer2, MTU, VLAN, STP, MLAG, bonding, PoE
+# - MTCIPv6: il corso dedicato al "nuovo" protocollo IP versione 6
+# - ISP: il corso dedicato agli operatori ISP/WISP con casi reali di configurazione
+# - CHR: il corso dedicato alla creazione di CHR in VPS con tecniche di 
+#        aggregazione di banda per sommare più connessioni a internet
+#-----------------------------------------------------------------------
+# DESCRIZIONE:
+# testato con RouterOS v7.8
+#
+# questo script esegue il ping verso un IP
+# impostando il "do-not-fragment" per chi viene forzato
+# il NON frammentare, e viene riempito il payload
+# di dati in modo da forzare il pacchetto con payload full.
+# ad ogni ciclo viene decrementato il valore
+# e al raggiungimento di un ping corretto senza deframmentzione
+# il programma esce dal ciclo stampando la dimensione MAX-MTU
+# 
+#--------------------------------------------------------------------------
+# ISTRUZIONI:
+# imposta l'indirizzo IP verso cui fare il test MTU
+# imposta MTU di start (mtu più grande da provare)
+# imposta MTU di end (mtu più piccolo da provare)
+# imposta MTU step (numero di decremento ad ogni test
+#--------------------------------------------------------------------------
+
+:local myIP 1.1.1.1
+:local start 1520
+:local end 1400
+:local maxmtu 0
+:local step 1
+:local test
+
+:set test $start
+
+while (($test) > $end) do={
+  #:log info ("test size $test")
+  if (([/ping $myIP do-not-fragment count=1 size=$test as-value]->"status"=null) = true) do={ 
+     :set maxmtu $test 
+     :set test 0
+     #:log info ("OK con $test")
+} else={ 
+     :set test ($test -$step) 
+     #:log info ("KO con $test")
+}
+
+}
+
+:log info ("test-mtu MAX MTU:$maxmtu");
+:put "MAX MTU:$maxmtu";
