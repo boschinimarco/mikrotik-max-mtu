@@ -1,10 +1,32 @@
 #-----------------------------------------------------------------------
-# NOME: test-mtu
+# NOME: test-mtu-routeros-v7
 # VERS: 1.0
 # DATA: 2023-05-05 (yyyy-mm-dd)
 # AUTH: Marco Boschini
 # MAIL: marco@corsimikrotik.it
 # WEB:  https://corsimikrotik.it
+#-----------------------------------------------------------------------
+# CorsiMikroTik è training center ufficiale MikroTik.
+#-----------------------------------------------------------------------
+# registrandoti sul sito https://corsimikrotik.it/registrazione
+# potrai accedere gratuitamente a:
+# - modulo 1 del corso ZeroMikroTik
+# - evento introduttivo a "TheDude"
+#-----------------------------------------------------------------------
+# i corsi disponibili sono:
+# - ZeroMikroTik: da Zero a MTCNA. 6 moduli online da 4 ore e poi MTCNA
+# - MTCNA: la prima certificazione MikroTik che ti permette di avere una panoramica
+#          completa sui prodotti MikroTik e sulle funzionalità di RouterOS
+# - MTCRE: il corso dedicato a Routing statico, dinamico OSPF, tunnel VPN e VLAN
+# - MTCINE: Inter-Networking dedicato a BGP-MPLS-VPLS
+# - MTCWE: il corso dedicato al wireless
+# - MTCSE: il corso dedicato alla security. Metodi di attacco e protezione/mitigazione.
+# - MTCTCE: Traffic Control è dedicato a DHCP, Firewall e QoS (Quality of Service)
+# - MTCSWE: switching, viaggio profondo nel layer2, MTU, VLAN, STP, MLAG, bonding, PoE
+# - MTCIPv6: il corso dedicato al "nuovo" protocollo IP versione 6
+# - ISP: il corso dedicato agli operatori ISP/WISP con casi reali di configurazione
+# - CHR: il corso dedicato alla creazione di CHR in VPS con tecniche di 
+#        aggregazione di banda per sommare più connessioni a internet
 #-----------------------------------------------------------------------
 # DESCRIZIONE:
 # testato con RouterOS v7.8
