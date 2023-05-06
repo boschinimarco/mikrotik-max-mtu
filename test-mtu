@@ -1,0 +1,51 @@
+#-----------------------------------------------------------------------
+# NOME: test-mtu
+# VERS: 1.0
+# DATA: 2023-05-05 (yyyy-mm-dd)
+# AUTH: Marco Boschini
+# MAIL: marco@corsimikrotik.it
+# WEB:  https://corsimikrotik.it
+#-----------------------------------------------------------------------
+# DESCRIZIONE:
+# testato con RouterOS v7.8
+#
+# questo script esegue il ping verso un IP
+# impostando il "do-not-fragment" per chi viene forzato
+# il NON frammentare, e viene riempito il payload
+# di dati in modo da forzare il pacchetto con payload full.
+# ad ogni ciclo viene decrementato il valore
+# e al raggiungimento di un ping corretto senza deframmentzione
+# il programma esce dal ciclo stampando la dimensione MAX-MTU
+# 
+#--------------------------------------------------------------------------
+# ISTRUZIONI:
+# imposta l'indirizzo IP verso cui fare il test MTU
+# imposta MTU di start (mtu più grande da provare)
+# imposta MTU di end (mtu più piccolo da provare)
+# imposta MTU step (numero di decremento ad ogni test
+#--------------------------------------------------------------------------
+
+:local myIP 1.1.1.1
+:local start 1520
+:local end 1400
+:local maxmtu 0
+:local step 1
+:local test
+
+:set test $start
+
+while (($test) > $end) do={
+  #:log info ("test size $test")
+  if (([/ping $myIP do-not-fragment count=1 size=$test as-value]->"status"=null) = true) do={ 
+     :set maxmtu $test 
+     :set test 0
+     #:log info ("OK con $test")
+} else={ 
+     :set test ($test -$step) 
+     #:log info ("KO con $test")
+}
+
+}
+
+:log info ("test-mtu MAX MTU:$maxmtu");
+:put "MAX MTU:$maxmtu";
